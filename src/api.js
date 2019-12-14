@@ -1,4 +1,10 @@
+/* Title: Demonstration of StepDown Rule by Uncle Bob, implemented by Dan Abramov
+   Note: I just added anotations as I reconginzed the pattern, didn't touch the implementation.
+*/
+
+// High Level Public Functions (The same Level of Abstraction)
 export function fetchRepo(repoId) {
+  // calling 2 private methods defined down
   return wrapPromise(getFromGitHub(`/repos/${repoId}`));
 }
 
@@ -18,6 +24,8 @@ export function fetchUserFollowing(userId) {
   return wrapPromise(getFromGitHub(`/users/${userId}/following`));
 }
 
+// Lower Level Private Functions
+
 async function getFromGitHub(url) {  
   const response = await fetch('https://api.github.com' + url);
   if (response.status !== 200) {
@@ -26,10 +34,10 @@ async function getFromGitHub(url) {
   return response.json();
 }
 
-// Note: this is a simplified implementation.
-// Don't copy paste this into your project!
-// This particular contract will likely change.
-// Projects like Relay implement a more fleshed out version of this.
+/*
+This is the lowest level of abstraction for this API, that's why is on the bottom.
+Notice it dosent call anything from above.
+*/
 function wrapPromise(promise) {
   let status = "pending";
   let result;
